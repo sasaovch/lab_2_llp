@@ -57,8 +57,26 @@ const char *astNodeTypeToString[] = {
     "JSON_ELEMENT",
     "JSON_ARRAY",
     "VALUES",
-    "JSON_ELEMENTS"
+    "JSON_ELEMENTS",
+    "ROOT"
 };
+
+Node root = {ROOT, 0, NULL, NULL};
+
+void printRoot() {
+    int *parent_dir = (int *) malloc(sizeof(int) * 256);
+    printTree(&(root), 0, true, parent_dir);
+}
+
+void addJsonInput(Node *node) {
+    if (root.right != NULL) printf("ERROR to assign json node to non null root.right");
+    if (root.right == NULL) root.right = node;
+}
+
+void addRequest(Node *node) {
+    if (root.left != NULL) printf("ERROR to assign request node to non null root.left");
+    if (root.left == NULL) root.left = node;
+}
 
 Node *createNode_V(AstNodeType type, Node *left, Node *right) {
   printf("Need to create node: %s\n", astNodeTypeToString[type]);
@@ -119,17 +137,28 @@ const char *getAstNodeTypeName(AstNodeType type) {
     }
 }
 
-void printTree(Node *node, int depth) {
 
+void printTree(Node *node, int depth, int is_left, int *parent_dir) {
     if (node == NULL) {
         return;
     }
-
-    printf("|-");
+    
     for (int i = 0; i < depth; ++i) {
-        printf("|-");
+        if (!parent_dir[i]) {
+            printf("   ");
+        } else {
+            printf("│  ");
+        }
     }
-    printf(" ");
+
+    if (depth != 0) {
+        if (is_left) {
+            printf("├");
+        } else {
+            printf("└");
+        }
+    }
+
     printf("%s ", getAstNodeTypeName(node->type));
     switch (node->type) {
         case DOUBLE:
@@ -154,7 +183,13 @@ void printTree(Node *node, int depth) {
     }
 
     printf("\n");
+     
+    parent_dir[depth] = is_left;
+    if (node->right != NULL) printTree(node->left, depth + 1, 1, parent_dir);
+    else {
+        printTree(node->left, depth + 1, 0, parent_dir);
+    }
     
-    printTree(node->left, depth + 1);
-    printTree(node->right, depth + 1);
+    printTree(node->right, depth + 1, 0, parent_dir);
+
 }

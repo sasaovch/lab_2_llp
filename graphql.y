@@ -99,9 +99,9 @@
 %%
 
 start:
-    operation_definitions                                  { printTree($$, 0); return 0; }
-  | json_input                                             { printTree($$, 0); return 0; }
-  | start RET_TOKEN                                        { printTree($$, 0); return 0; }
+    json_input operation_definitions                       { addJsonInput($1); addRequest($2); }
+  | operation_definitions json_input                       { addJsonInput($2); addRequest($1); }
+  | start RET_TOKEN                                        { printRoot(); return 0;}
   ;
 
 operation_definitions:

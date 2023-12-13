@@ -27,7 +27,7 @@ FLEX :
 	flex -o $(OBJ_DIR)lexer.c $(SRC_DIR)graphql.l
 
 BISON :
-	bison -t -o $(OBJ_DIR)parser.c --header=$(OBJ_DIR)parser.h $(SRC_DIR)graphql.y -Wcounterexamples -Wother -Wconflicts-sr
+	bison -t -o $(OBJ_DIR)parser.c --header=$(OBJ_DIR)parser.h $(SRC_DIR)graphql.y -Wconflicts-sr
 
 .PHONY: clean
 clean :

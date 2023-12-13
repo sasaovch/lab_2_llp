@@ -58,6 +58,7 @@ typedef enum {
     JSON_ARRAY,
     VALUES,
     JSON_ELEMENTS,
+    ROOT,
     AST_NODE_TYPE_COUNT
 } AstNodeType;
 
@@ -75,13 +76,18 @@ typedef struct Node {
   struct Node *right;
 } Node;
 
+extern Node root; 
+
 Node *createNode_V(AstNodeType type, Node *left, Node *right);
 Node *createNode_I(AstNodeType type, int val, Node *left, Node *right);
 Node *createNode_D(AstNodeType type, double val, Node *left, Node *right);
 Node *createNode_B(AstNodeType type, bool val, Node *left, Node *right);
 Node *createNode_S(AstNodeType type, char *val, Node *left, Node *right);
 
+void printRoot();
+void addJsonInput(Node *node);
+void addRequest(Node *node);
 const char *getAstNodeTypeName(AstNodeType type);
-void printTree(Node *node, int depth);
+void printTree(Node *node, int depth, int is_left, int *parent_dir);
 
 #endif
