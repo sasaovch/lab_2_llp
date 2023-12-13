@@ -183,7 +183,7 @@ void printTree(Node *node, int depth, int is_left, int *parent_dir) {
     }
 
     printf("\n");
-     
+    if (depth != 0)
     parent_dir[depth] = is_left;
     if (node->right != NULL) printTree(node->left, depth + 1, 1, parent_dir);
     else {

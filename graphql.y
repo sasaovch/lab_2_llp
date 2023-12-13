@@ -190,6 +190,10 @@ argument_list:
 argument:
     name DOUBLE_DOT_TOKEN value                            { $$ = createNode_V(NAME_DEFINITION, $1, $3); }
   | name DOUBLE_DOT_TOKEN variable                         { $$ = createNode_V(NAME_DEFINITION, $1, $3); }
+  | name LOWER_OPERATOR_TOKEN value                        { $$ = createNode_V(LOWER_OPERATOR, $1, $3); }
+  | name GREATER_OPERATOR_TOKEN value                      { $$ = createNode_V(GREATER_OPERATOR, $1, $3); }
+  | name GREATER_EQUAL_TOKEN value                         { $$ = createNode_V(GREATER_EQUAL, $1, $3); }
+  | name LOWER_EQUAL_TOKEN value                           { $$ = createNode_V(LOWER_EQUAL, $1, $3); }
   | variable                                               { $$ = createNode_V(VARIABLE_DEFINITION, $1, NULL); }
   | variable DOUBLE_DOT_TOKEN value                        { $$ = createNode_V(VARIABLE_DEFINITION, $1, $3); }
   ;
@@ -203,6 +207,8 @@ rel_expr:
       expr                                                 { $$ = $1; }
     | rel_expr LOWER_OPERATOR_TOKEN expr                   { $$ = createNode_V(LOWER_EQUAL, $1, $3); }
     | rel_expr GREATER_OPERATOR_TOKEN expr                 { $$ = createNode_V(GREATER_EQUAL, $1, $3); }
+    | rel_expr LOWER_EQUAL_TOKEN expr                      { $$ = createNode_V(LOWER_EQUAL, $1, $3); }
+    | rel_expr GREATER_EQUAL_TOKEN expr                    { $$ = createNode_V(GREATER_EQUAL, $1, $3); }
     | rel_expr EQUAL_OPERATOR_TOKEN expr                   { $$ = createNode_V(EQUAL_OPERATOR, $1, $3); }
     | rel_expr NOT_EQUAL_TOKEN expr                        { $$ = createNode_V(NOT_EQUAL, $1, $3); }
     ;
